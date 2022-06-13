@@ -1,0 +1,74 @@
+/* Allen T's Pokemon Database and Stats */
+/* https://gist.github.com/pamelafox/26b9357c6120d3d0d27c2b90c950e8c6 */
+
+/* Table of my favorite pokemon and their stats */
+CREATE TABLE pokemon(
+  Rank     INTEGER,
+  Name       TEXT PRIMARY KEY,
+  Type_1     TEXT,
+  Type_2     TEXT,
+  Total      INTEGER,
+  HP         INTEGER,
+  Attack     INTEGER,
+  Defense    INTEGER,
+  Sp_Atk     INTEGER,
+  Sp_Def     INTEGER,
+  Speed      INTEGER,
+  Generation INTEGER,
+  Legendary  TEXT
+);
+
+INSERT INTO pokemon(Rank,Name,Type_1,Type_2,Total,HP,Attack,Defense,Sp_Atk,Sp_Def,Speed,Generation,Legendary) VALUES (1,'Gengar','Ghost','Poison',500,60,65,60,130,75,110,1,'False');
+INSERT INTO pokemon(Rank,Name,Type_1,Type_2,Total,HP,Attack,Defense,Sp_Atk,Sp_Def,Speed,Generation,Legendary) VALUES (2,'Gyarados','Water','Flying',540,95,125,79,60,100,81,1,'False');
+INSERT INTO pokemon(Rank,Name,Type_1,Type_2,Total,HP,Attack,Defense,Sp_Atk,Sp_Def,Speed,Generation,Legendary) VALUES (3,'Machamp','Fighting',NULL,505,90,130,80,65,85,55,1,'False');
+INSERT INTO pokemon(Rank,Name,Type_1,Type_2,Total,HP,Attack,Defense,Sp_Atk,Sp_Def,Speed,Generation,Legendary) VALUES (4,'Infernape','Fire','Fighting',534,76,104,71,104,71,108,4,'False');
+INSERT INTO pokemon(Rank,Name,Type_1,Type_2,Total,HP,Attack,Defense,Sp_Atk,Sp_Def,Speed,Generation,Legendary) VALUES (5,'Croagunk','Poison','Fighting',300,48,61,40,61,40,50,4,'False');
+INSERT INTO pokemon(Rank,Name,Type_1,Type_2,Total,HP,Attack,Defense,Sp_Atk,Sp_Def,Speed,Generation,Legendary) VALUES (6,'Dusknoir','Ghost',NULL,525,45,100,135,65,135,45,4,'False');
+INSERT INTO pokemon(Rank,Name,Type_1,Type_2,Total,HP,Attack,Defense,Sp_Atk,Sp_Def,Speed,Generation,Legendary) VALUES (7,'Abra','Psychic',NULL,310,25,20,15,105,55,90,1,'False');
+INSERT INTO pokemon(Rank,Name,Type_1,Type_2,Total,HP,Attack,Defense,Sp_Atk,Sp_Def,Speed,Generation,Legendary) VALUES (9,'Electrode','Electric',NULL,480,60,50,70,80,80,140,1,'False');
+INSERT INTO pokemon(Rank,Name,Type_1,Type_2,Total,HP,Attack,Defense,Sp_Atk,Sp_Def,Speed,Generation,Legendary) VALUES (8,'Luxray','Electric',NULL,523,80,120,79,95,79,70,4,'False');
+INSERT INTO pokemon(Rank,Name,Type_1,Type_2,Total,HP,Attack,Defense,Sp_Atk,Sp_Def,Speed,Generation,Legendary) VALUES (10,'Dialga','Steel','Dragon',680,100,120,120,150,100,90,4,'True');
+INSERT INTO pokemon(Rank,Name,Type_1,Type_2,Total,HP,Attack,Defense,Sp_Atk,Sp_Def,Speed,Generation,Legendary) VALUES (11,'Regigigas','Normal',NULL,670,110,160,110,80,110,100,4,'True');
+INSERT INTO pokemon(Rank,Name,Type_1,Type_2,Total,HP,Attack,Defense,Sp_Atk,Sp_Def,Speed,Generation,Legendary) VALUES (12,'Scrafty','Dark','Fighting',488,65,90,115,45,115,58,5,'False');
+INSERT INTO pokemon(Rank,Name,Type_1,Type_2,Total,HP,Attack,Defense,Sp_Atk,Sp_Def,Speed,Generation,Legendary) VALUES (13,'Palkia','Water','Dragon',680,90,120,100,150,120,100,4,'True');
+INSERT INTO pokemon(Rank,Name,Type_1,Type_2,Total,HP,Attack,Defense,Sp_Atk,Sp_Def,Speed,Generation,Legendary) VALUES (14,'Zapdos','Electric','Flying',580,90,90,85,125,90,100,1,'True');
+INSERT INTO pokemon(Rank,Name,Type_1,Type_2,Total,HP,Attack,Defense,Sp_Atk,Sp_Def,Speed,Generation,Legendary) VALUES (15,'Rayquaza','Dragon','Flying',680,105,150,90,150,90,95,3,'True');
+INSERT INTO pokemon(Rank,Name,Type_1,Type_2,Total,HP,Attack,Defense,Sp_Atk,Sp_Def,Speed,Generation,Legendary) VALUES (16,'Torterra','Grass','Ground',525,95,109,105,75,85,56,4,'False');
+INSERT INTO pokemon(Rank,Name,Type_1,Type_2,Total,HP,Attack,Defense,Sp_Atk,Sp_Def,Speed,Generation,Legendary) VALUES (17,'Starly','Normal','Flying',245,40,55,30,30,30,60,4,'False');
+INSERT INTO pokemon(Rank,Name,Type_1,Type_2,Total,HP,Attack,Defense,Sp_Atk,Sp_Def,Speed,Generation,Legendary) VALUES (18,'Garchomp','Dragon','Ground',600,108,130,95,80,85,102,4,'False');
+INSERT INTO pokemon(Rank,Name,Type_1,Type_2,Total,HP,Attack,Defense,Sp_Atk,Sp_Def,Speed,Generation,Legendary) VALUES (19,'Lucario','Fighting','Steel',525,70,110,70,115,70,90,4,'False');
+INSERT INTO pokemon(Rank,Name,Type_1,Type_2,Total,HP,Attack,Defense,Sp_Atk,Sp_Def,Speed,Generation,Legendary) VALUES (20,'Mewtwo','Psychic',NULL,680,106,110,90,154,90,130,1,'True');
+
+/* Which Pokemon has the highest stats? */
+SELECT Name, Total FROM pokemon ORDER BY Total;
+
+SELECT Rank, Name, Total FROM pokemon
+WHERE Total = (SELECT MAX(Total) FROM pokemon);
+
+/* My favorite Type is the Ghost type, which pokemon have the Ghost Type? */
+SELECT * FROM pokemon WHERE Type_1 IN (SELECT Type_1 FROM pokemon WHERE Type_1 LIKE "%Ghost%") OR Type_2 IN (SELECT Type_2 FROM pokemon WHERE Type_2 LIKE "%Ghost%");
+
+/* I want to add a column to give my reasoning for some of my choices*/
+SELECT Name, 
+    CASE 
+        WHEN Name = "Gengar" THEN "High stats, high variety in               moves, the spooky shadow/ghost theme is cool"
+        WHEN Name = "Abra" THEN "Cool how he's rare and difficult             to catch in the wild"
+        WHEN Name = "Zapdos" THEN "Strong and reliable electric"
+        WHEN Name = "Luxray" THEN "Cool looking and easy to                  obtain"
+        WHEN Name = "Machamp" THEN "BUFF BOI"
+        WHEN Name = "Regigigas" THEN "BIG BOI"
+        WHEN Name = "Starly" THEN "Cool and is a flying type"
+        WHEN Name = "Rayquaza" THEN "One shots everyone and looks             cool"
+        WHEN Name = "Gyarados" THEN "My go to water type inevery             game, huge stats and appreciate it more after                    leveling magicarp up for so long"
+        WHEN Name = "Dialga" THEN "My first legendary I caught"
+        ELSE "Just pretty memorable"
+    END AS "Reason" 
+FROM pokemon;
+
+/* I'm curious to see which generation has the most impressive pokemon from my list, excluding legendaries.*/
+Select COUNT(Generation) AS "#", Generation from pokemon 
+WHERE legendary = "False" 
+GROUP BY generation
+;
+
+
