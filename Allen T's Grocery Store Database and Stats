@@ -1,0 +1,25 @@
+/** ALLEN T'S CLOTHING STORE **/
+
+/* The items in my store and their associated stats */
+CREATE TABLE store (id INTEGER PRIMARY KEY, item TEXT, price INTEGER, quantity INTEGER, aisle INTEGER);
+
+INSERT INTO store VALUES (1, "t-shirt", 10, 20, 1);
+INSERT INTO store VALUES (2, "sweater", 15, 20, 1);
+INSERT INTO store VALUES (3, "hoodie", 20, 20, 1);
+INSERT INTO store VALUES (4, "hat", 15, 20, 2);
+INSERT INTO store VALUES (5, "ring", 5, 20, 2);
+INSERT INTO store VALUES (6, "belt", 10, 20, 2);
+INSERT INTO store VALUES (7, "gloves", 5, 20, 2);
+INSERT INTO store VALUES (8, "shoes", 50, 20, 3);
+
+/* Presenting the data in several ways */
+SELECT * FROM store;
+SELECT * FROM store ORDER BY price;
+SELECT * FROM store ORDER BY aisle;
+SELECT aisle, SUM(price) FROM store GROUP BY aisle;
+SELECT * FROM store WHERE price < 16 ORDER BY aisle;
+SELECT item, price FROM store WHERE price = (SELECT MIN(price) FROM store);
+
+/** Sold fifteen t-shirts **/
+UPDATE store SET quantity = quantity - 15 WHERE item = "t-shirt";
+SELECT * FROM store;
