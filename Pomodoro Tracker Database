@@ -1,0 +1,46 @@
+/* Allen T's Pomodoro App Database */
+
+/* The Pomodoro Technique is a time management method using a timer to break work into intervals, typically 25 minutes in length, separated by short breaks.*/
+
+/* A pomodoro tracking journal in which the user enters the total time spent studying and the total time spent taking breaks throughout each of their pomodoro sessions.*/
+/* Time in minutes */
+CREATE TABLE pomodoro (id INTEGER PRIMARY KEY, session_id INTEGER, subject TEXT, study_time INTEGER, break_time INTEGER);
+
+INSERT INTO pomodoro (session_id, subject, study_time, break_time) VALUES (1, "biology midterm", 120, 30);
+INSERT INTO pomodoro (session_id, subject, study_time, break_time) VALUES (1, "chemistry midterm", 90, 20);
+INSERT INTO pomodoro (session_id, subject, study_time, break_time) VALUES (1, "math midterm", 30, 5);
+INSERT INTO pomodoro (session_id, subject, study_time, break_time) VALUES (2, "biology midterm", 100, 30);
+INSERT INTO pomodoro (session_id, subject, study_time, break_time) VALUES (2, "chemistry midterm", 80, 40);
+INSERT INTO pomodoro (session_id, subject, study_time, break_time) VALUES (3, "biology midterm", 120, 30);
+INSERT INTO pomodoro (session_id, subject, study_time, break_time) VALUES (3, "math midterm", 25, 0);
+INSERT INTO pomodoro (session_id, subject, study_time, break_time) VALUES (3, "biology midterm", 120, 30);
+INSERT INTO pomodoro (session_id, subject, study_time, break_time) VALUES (4, "chemistry midterm", 120, 30);
+INSERT INTO pomodoro (session_id, subject, study_time, break_time) VALUES (4, "biology midterm", 60, 20);
+INSERT INTO pomodoro (session_id, subject, study_time, break_time) VALUES (4, "math midterm", 45, 15);
+
+/* A table that keeps track of the dates of each session */
+CREATE TABLE session_dates (id INTEGER PRIMARY KEY, session_id INTEGER, date TEXT);
+
+INSERT INTO session_dates (session_id, date) VALUES (1, "3/3/22");
+INSERT INTO session_dates (session_id, date) VALUES (2, "3/4/22");
+INSERT INTO session_dates (session_id, date) VALUES (3, "3/5/22");
+INSERT INTO session_dates (session_id, date) VALUES (4, "3/6/22");
+
+SELECT * FROM session_dates;
+
+/* The user first entered the study time incorrectly and tries to change it. */
+UPDATE pomodoro SET study_time = 55 WHERE session_id = 4 AND subject = "math midterm";
+
+SELECT * FROM pomodoro;
+
+/* The user feels bad about lying on their journal about studying for their math midterm and so deletes the entry */
+DELETE FROM pomodoro WHERE id = 11;
+
+SELECT * FROM pomodoro;
+
+/* A simple table that allows the user to keep track of which subjects they studied on which dates. */
+SELECT session_dates.date, pomodoro.subject from pomodoro 
+    LEFT OUTER JOIN session_dates
+    ON session_dates.session_id = pomodoro.session_id;
+
+
