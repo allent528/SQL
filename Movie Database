@@ -1,0 +1,40 @@
+/* Allen T's Movie Database */
+
+/* List of shows in this list */
+CREATE TABLE movies (id INTEGER PRIMARY KEY,
+    title TEXT, when_completed INTEGER, finished TEXT);
+
+INSERT INTO movies(title, when_completed, finished) VALUES ("Better Call Saul", 2022, "yes");
+INSERT INTO movies(title, when_completed, finished) VALUES ("Curb your Enthusiasm", NULL, "no");
+INSERT INTO movies(title, when_completed, finished) VALUES ("Game of Thrones", 2019, "yes");
+INSERT INTO movies(title, when_completed, finished) VALUES ("Breaking Bad", 2020, "yes");
+INSERT INTO movies(title, when_completed, finished) VALUES ("The Man Who Fell To Earth", NULL, "no");
+
+/* Cool actors from said movie */
+CREATE TABLE actors (id INTEGER PRIMARY KEY,
+    title_id INTEGER, favorite_actor TEXT);
+
+INSERT INTO actors(title_id, favorite_actor) VALUES (1, "Bob Odenkirk");
+INSERT INTO actors(title_id, favorite_actor) VALUES (2, NULL);
+INSERT INTO actors(title_id, favorite_actor) VALUES (3, "Iwan Rheon");
+INSERT INTO actors(title_id, favorite_actor) VALUES (4, "Aaron Paul");
+INSERT INTO actors(title_id, favorite_actor) VALUES (5, NULL);
+
+/* My ratings for said movies */
+CREATE TABLE ratings (id INTEGER PRIMARY KEY,
+    title_id INTEGER, rating INTEGER);
+
+INSERT INTO ratings(title_id, rating) VALUES (1, 9);
+INSERT INTO ratings(title_id, rating) VALUES (2, 9);
+INSERT INTO ratings(title_id, rating) VALUES (3, 7);
+INSERT INTO ratings(title_id, rating) VALUES (4, 10);
+INSERT INTO ratings(title_id, rating) VALUES (5, 8);
+
+/* Comprehensible list of movie/show, actor, and rating */
+SELECT movies.title, actors.favorite_actor, ratings.rating FROM movies
+    LEFT OUTER JOIN actors
+    ON actors.title_id = movies.id 
+    LEFT OUTER JOIN ratings
+    ON ratings.title_id = movies.id
+;
+
