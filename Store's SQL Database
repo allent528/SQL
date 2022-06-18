@@ -1,43 +1,49 @@
-# Allen T's Store Database
+/* Allen T's Store Database */
 
-#The goal of this SQL code is to ask crucial queries that the store need in order to appropriately portray their shop's earnings.
+/* The goal of this SQL code is to ask crucial queries that the store need in order to appropriately portray their shop's earnings. */
 
-# How many orders were placed in January? 
+/* How many orders were placed in January? */
 SELECT COUNT(orderid)
 FROM BIT_DB.JanSales
-;
-# How many of those orders were for an iPhone? 
+; 
+/* How many of those orders were for an iPhone? */
 SELECT COUNT(orderid)
 FROM BIT_DB.JanSales
 WHERE Product="iPhone"
 ;
-# Select the customer account numbers for all the orders that were placed in February. 
+/* Select the customer account numbers for all the orders that were placed in February. */
 SELECT acctnum
 FROM BIT_DB.customers cust
 INNER JOIN BIT_DB.FebSales Feb
 ON cust.order_id=FEB.orderid
 ;
-# Which product was the cheapest one sold in January, and what was the price? 
+/* Which product was the cheapest one sold in January, and what was the price? */
 SELECT DISTINCT product, price 
 FROM BIT_DB.JanSales 
 ORDER BY price ASC 
 LIMIT 1
 ;
-# What is the total revenue for each product sold in January?
+/* What is the total revenue for each product sold in January?*/
 SELECT sum(quantity)*price AS revenue ,product
 FROM BIT_DB.JanSales
 GROUP BY product
 ;
-# Which products were sold in February at 548 Lincoln St, Seattle, WA 98101, how many of each were sold, and what was the total revenue?
+/* Which products were sold in February at 548 Lincoln St, Seattle, WA 98101, how many of each were sold, and what was the total revenue?*/
 SELECT sum(Quantity), product, sum(quantity)*price as revenue
 FROM BIT_DB.FebSales 
 WHERE location = "548 Lincoln St, Seattle, WA 98101"
 GROUP BY product
 ;
-# How many customers ordered more than 2 products at a time, and what was the average amount spent for those customers? 
+/* How many customers ordered more than 2 products at a time, and what was the average amount spent for those customers? */
 SELECT count(cust.acctnum), avg(quantity*price)
 FROM BIT_DB.FebSales Feb
 LEFT JOIN BIT_DB.customers cust
 ON FEB.orderid=cust.order_id
 WHERE Feb.quantity > 2
+;
+/* List all the products sold in Los Angeles in February, and include how many of each were sold.*/
+SELECT product, sum(quantity) 
+FROM BIT_DB.FebSales feb 
+WHERE location LIKE '%Los Angeles%'
+GROUP BY product
 ;
