@@ -1,0 +1,60 @@
+/* Allen T's SQL: Top 50 songs from Spotify 2021 */
+
+CREATE TABLE BIT_DB.Spotifydata (
+id integer PRIMARY KEY,
+artist_name varchar NOT NULL,
+track_name varchar NOT NULL,
+track_id varchar NOT NULL,
+popularity integer NOT NULL,
+danceability decimal(4,3) NOT NULL,
+energy decimal(4,3) NOT NULL,
+key integer NOT NULL,
+loudness decimal(5,3) NOT NULL,
+mode integer NOT NULL,
+speechiness decimal(5,4) NOT NULL,
+acousticness decimal(6,5) NOT NULL,
+instrumentalness text NOT NULL,
+liveness decimal(5,4) NOT NULL,
+valence decimal(4,3) NOT NULL,
+tempo decimal(6,3) NOT NULL,
+duration_ms integer NOT NULL,
+time_signature integer NOT NULL 
+)
+
+/* Kaggle data imported into SQLiteStudio as a .csv file
+Source: https://www.kaggle.com/datasets/equinxx/spotify-top-50-songs-in-2021?resource=download */
+
+/* Data is presented by asking a few specific key questions */
+
+/* Who are the top 5 artists of 2021 according to Spotify? */
+SELECT artist_name, popularity
+FROM SpotifyData
+ORDER BY popularity DESC
+LIMIT 5
+;
+/* Which artists have the most songs in Spotify 2021 with a popularity of above 90? */
+SELECT artist_name, count(artist_name) AS num_pop_songs
+FROM SpotifyData
+WHERE popularity > 90
+GROUP BY artist_name
+;
+/* Here I'm attempting to figure out what makes the top 50 songs so popular. */
+SELECT track_name, popularity, danceability 
+FROM SpotifyData
+ORDER BY popularity DESC
+;
+SELECT track_name, popularity, loudness 
+FROM SpotifyData
+ORDER BY popularity DESC
+;
+SELECT track_name, popularity, energy 
+FROM SpotifyData
+ORDER BY popularity DESC
+;
+SELECT track_name, popularity, tempo 
+FROM SpotifyData
+ORDER BY popularity DESC
+;
+/* CONCLUSION: The tempo parameter may contribute the most to popularity from: danceability, loudness, energy, and tempo, 
+but further research is needed to determine statistical significance. */
+
