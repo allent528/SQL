@@ -1,0 +1,98 @@
+/* Allen T's Weather Station Database */
+
+/* In this case, I utilize the STATION table to answer numerous questions in order to present the data */
+/* Data Source: hackerrank.com/challenges/weather-observation-station */
+/* MySQL */
+
+/* 1. Query a list of CITY and STATE from the STATION table. */
+SELECT CITY, STATE
+FROM STATION
+;
+/* 2. Query the following two values from the STATION table:
+
+The sum of all values in LAT_N rounded to a scale of 2 decimal places.
+The sum of all values in LONG_W rounded to a scale of 2 decimal places. */
+SELECT ROUND(SUM(LAT_N),2), ROUND(SUM(LONG_W),2)
+FROM station
+;
+/* 3. Query a list of CITY names from STATION for cities that have an even ID number. Print the results in any order, but exclude duplicates from the answer. */
+SELECT DISTINCT CITY
+FROM STATION
+WHERE ID%2 = 0
+;
+/* 4. Find the difference between the total number of CITY entries in the table and the number of distinct CITY entries in the table. */
+Select  count(CITY) - count(DISTINCT CITY) 
+from station
+;
+/* 5. Query the two cities in station with the shortest and longest ciy names, as well as their respective lengths. 
+If there is more than one smallest or largest city, choose the one that comes first when ordered alphabetically. */
+(SELECT city, length(city)
+FROM station
+order by length(city) ASC, 
+city ASC 
+LIMIT 1)
+UNION
+(SELECT city, length(city)
+FROM station
+order by length(city) desc, 
+city ASC 
+LIMIT 1)
+;
+/* 6. Query the list of CITY names starting with vowels (i.e., a, e, i, o, or u) from STATION. Your result cannot contain duplicates. */
+SELECT DISTINCT City
+FROM Station
+WHERE City LIKE 'A%' or City LIKE 'E%' or City LIKE 'I%' or City LIKE 'O%' or City LIKE 'U%'
+;
+/* 7. Query the list of CITY names ending with vowels (a, e, i, o, u) from STATION. Your result cannot contain duplicates. */
+SELECT DISTINCT City
+FROM Station
+WHERE City LIKE '%a' or City LIKE '%e' or City LIKE '%i' or City LIKE '%o' or City LIKE '%u'
+;
+/* 8. Query the list of CITY names from STATION which have vowels (i.e., a, e, i, o, and u) as both their first and last characters. Your result cannot contain duplicates. */
+SELECT DISTINCT City
+FROM Station
+WHERE (City LIKE 'A%' or City LIKE 'E%' or City LIKE 'I%' or City LIKE 'O%' or City LIKE 'U%')
+AND (City LIKE '%A' or City LIKE '%E' or City LIKE '%I' or City LIKE '%O' or City LIKE '%U')
+;
+/* 9. Query the list of CITY names from STATION that do not start with vowels. Your result cannot contain duplicates. */
+SELECT DISTINCT City
+FROM Station
+WHERE City NOT LIKE 'A%' or City NOT LIKE 'E%' or City NOT LIKE 'I%' or City NOT LIKE 'O%' or City NOT LIKE 'U%'
+;
+/* 10. Query the list of CITY names from STATION that do not end with vowels. Your result cannot contain duplicates. */
+SELECT DISTINCT City
+FROM Station
+WHERE City NOT LIKE '%A' or City NOT LIKE '%E' or City NOT LIKE '%I' or City NOT LIKE '%O' or City NOT LIKE '%U'
+;
+/* 11. Query the list of CITY names from STATION that either do not start with vowels or do not end with vowels. Your result cannot contain duplicates. */
+SELECT DISTINCT City FROM Station WHERE (City NOT LIKE '%A' AND City NOT LIKE '%E' AND City NOT LIKE '%I' AND City NOT LIKE '%O' AND City NOT LIKE '%U') 
+OR (City NOT LIKE 'A%' AND City NOT LIKE 'E%' AND City NOT LIKE 'I%' AND City NOT LIKE 'O%' AND City NOT LIKE 'U%')
+;
+/* 12. Query the list of CITY names from STATION that do not start with vowels and do not end with vowels. Your result cannot contain duplicates. */
+SELECT DISTINCT CITY FROM STATION
+WHERE CITY NOT LIKE 'a%' 
+AND CITY NOT LIKE 'e%'
+AND CITY NOT LIKE 'i%'
+AND CITY NOT LIKE 'o%'
+AND CITY NOT LIKE 'u%'
+AND CITY NOT LIKE '%a' 
+AND CITY NOT LIKE '%e'
+AND CITY NOT LIKE '%i'
+AND CITY NOT LIKE '%o'
+AND CITY NOT LIKE '%u'
+;
+/* 13. Query the sum of Northern Latitudes (LAT_N) from STATION having values greater than 38.7880 and less than 137.2345. Truncate your answer to 4 decimal places. */
+SELECT TRUNCATE(SUM(LAT_N),4)
+FROM Station
+WHERE LAT_N > 38.7880 AND LAT_N < 137.2345
+;
+/* 14. Query the greatest value of the Northern Latitudes (LAT_N) from STATION that is less than 137.2345. Truncate your answer to 4 decimal places. */
+SELECT ROUND(max(LAT_N), 4)
+FROM station
+WHERE LAT_N < 137.2345
+;
+/* 15. Query the Western Longitude (LONG_W) for the largest Northern Latitude (LAT_N) in STATION that is less than . Round your answer to  decimal places. */
+SELECT ROUND(LONG_W,4)
+FROM STATION
+WHERE LAT_N = (SELECT MAX(LAT_N) FROM STATION WHERE LAT_N < 137.2345)
+;
