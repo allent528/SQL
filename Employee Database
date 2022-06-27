@@ -20,12 +20,12 @@ Query the number of ocurrences of each occupation in OCCUPATIONS. Sort the occur
  
 where [occupation_count] is the number of occurrences of an occupation in OCCUPATIONS and [occupation] is the lowercase occupation name. 
 If more than one Occupation has the same [occupation_count], they should be ordered alphabetically. */
-SELECT concat(name,concat("(",LEFT(occupation,1),")")) 
+(SELECT CONCAT(name,CONCAT("(",LEFT(occupation,1),")")) 
 FROM occupations 
-ORDER BY name asc
-;
-SELECT CONCAT("There are a total of", " ",COUNT(occupation), " ",LCASE(occupation),"s",".")AS stat
+ORDER BY name asc)
+UNION
+(SELECT CONCAT("There are a total of", " ",COUNT(occupation), " ",LCASE(occupation),"s",".")AS stat
 FROM occupations
 GROUP BY occupation
-ORDER BY COUNT(occupation) ASC, occupation
+ORDER BY COUNT(occupation) ASC, occupation)
 ;
