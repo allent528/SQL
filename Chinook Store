@@ -110,3 +110,8 @@ FROM chinook.Invoices i
 JOIN chinook.invoice_items ii
 WHERE i.InvoiceDate LIKE ("%2009%")
 ;
+/* OR */
+SELECT sum(total)
+FROM chinook.invoices i
+WHERE i.invoicedate LIKE ("%2009%")
+;
