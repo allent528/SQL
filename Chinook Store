@@ -115,3 +115,9 @@ SELECT sum(total)
 FROM chinook.invoices i
 WHERE i.invoicedate LIKE ("%2009%")
 ;
+/* Who is each employee's boss? */
+SELECT a.FirstName AS Employee_First_Name, a. LastName AS Employee_Last_Name, b.FirstName AS Boss_First_Name, b.LastName AS Boss_Last_Name
+FROM employees a
+JOIN employees b
+ON a.reportsto = b.employeeid
+;
