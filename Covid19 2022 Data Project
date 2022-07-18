@@ -4,6 +4,7 @@ Skills used: Joins, CTE's, Temp Tables, Windows Functions, Aggregate Functions, 
 */
 
 -- The tables
+
 Select *
 From PortfolioProject.CovidDeaths
 Where continent is not null 
@@ -99,7 +100,7 @@ Join CovidVaccinations vac
 	and dea.date = vac.date
 where dea.continent is not null 
 )
-Select *, (RollingPeopleVaccinated/cast(Population as int))*100 AS Roll_PeopleVacc_perpop
+Select *, (RollingPeopleVaccinated/cast(Population as float))*100 AS Roll_PeopleVacc_perpop
 From cte_PopvsVac
 ;
 
@@ -124,7 +125,7 @@ Join CovidVaccinations vac
 	On dea.location = vac.location
 	and dea.date = vac.date
 ;
-Select *, (RollingPeopleVaccinated/cast(Population as int))*100 AS Roll_PeopleVacc_perpop
+Select *, (RollingPeopleVaccinated/cast(Population as float))*100 AS Roll_PeopleVacc_perpop
 From PercentPopulationVaccinated
 ;
 
