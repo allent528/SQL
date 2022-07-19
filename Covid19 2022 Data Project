@@ -1,6 +1,8 @@
 /*
 Allen T's Covid 19 Data Dive 
 Skills used: Joins, CTE's, Temp Tables, Windows Functions, Aggregate Functions, Creating Views, Converting Data Types
+
+Data Source: Mathieu, E., Ritchie, H., Ortiz-Ospina, E. et al. A global database of COVID-19 vaccinations. Nat Hum Behav (2021)
 */
 
 -- The tables
