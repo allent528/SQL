@@ -26,11 +26,23 @@ Source: https://www.kaggle.com/datasets/equinxx/spotify-top-50-songs-in-2021?res
 
 /* Data is presented by asking a few specific key questions */
 
+-- First I determined the avg popularity, danceability, and energy by artist and track. 
+SELECT artist_name,track_name,avg(popularity),avg(danceability),avg(energy)
+FROM BIT_DB.spotifydata
+GROUP BY artist_name, track_name
+;
 /* Who are the top 5 artists of 2021 according to Spotify? */
-SELECT artist_name, popularity
+SELECT artist_name, avg(popularity)
 FROM SpotifyData
-ORDER BY popularity DESC
+GROUP BY 1
+ORDER BY 2 DESC
 LIMIT 5
+;
+-- Top 10 artists by popularity
+SELECT track_name, artist_name, popularity
+FROM BIT_DB.spotifydata
+ORDER BY popularity desc
+LIMIT 10
 ;
 /* Which artists have the most songs in Spotify 2021 with a popularity of above 90? */
 SELECT artist_name, count(artist_name) AS num_pop_songs
