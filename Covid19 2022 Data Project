@@ -129,7 +129,49 @@ Select *, (RollingPeopleVaccinated/cast(Population as float))*100 AS Roll_People
 From PercentPopulationVaccinated
 ;
 
--- Creating Views to store data for later visualizations in Tableau
+
+-- Queries stored for visualizations in Tableau: 
+
+-- #1
+Select SUM(new_cases)as total_cases,SUM(cast(new_deaths as int))as total_deaths,
+    (SUM(cast(new_deaths as int))/SUM(cast(new_cases as float))) * 100 as death_percentage
+From PortfolioProject.CovidDeaths
+where continent is not null
+order by 1,2
+;
+
+-- #2
+Select location,SUM(cast(new_deaths as int))as TotalDeathCount
+From PortfolioProject.CovidDeaths
+Where continent is null
+and location not in('World','European Union','International')
+Group by location
+order by TotalDeathCount desc
+;
+
+-- #3
+Select Location,Population,MAX(total_cases)as HighestInfectionCount,
+Max((total_cases/cast(population as float)))*100 as Percent_PopulationInfected
+From PortfolioProject.CovidDeaths
+Group by Location,Population
+order by Percent_PopulationInfected desc
+;
+
+-- #4
+Select Location,Population,date,MAX(total_cases)as Highest_InfectionCount,
+(max(total_cases/cast(population as float))) * 100 as Percent_Population_Infected
+From PortfolioProject.CovidDeaths
+Group by Location,Population,date
+order by Percent_Population_Infected desc
+;
+
+-- Data Visualized in Tableau 
+-- Result: https://public.tableau.com/app/profile/allen.thomas7087/viz/UnexpectedCovid19Data/Dashboard1?publish=yes
+
+
+
+
+-- Creating Views to store data for more visualizations in Tableau
 
 Create View PercentPopulationVaccinated as 
 Select dea.continent,dea.location,dea.date,dea.population,vac.new_vaccinations
