@@ -169,9 +169,7 @@ order by Percent_Population_Infected desc
 -- Result: https://public.tableau.com/app/profile/allen.thomas7087/viz/UnexpectedCovid19Data/Dashboard1?publish=yes
 
 
-
-
--- Creating Views to store data for more visualizations in Tableau
+-- Creating Views to store data for future visualizations in Tableau
 
 Create View PercentPopulationVaccinated as 
 Select dea.continent,dea.location,dea.date,dea.population,vac.new_vaccinations
@@ -183,21 +181,13 @@ Join CovidVaccinations vac
     and dea.date=vac.date
 WHERE dea.continent is not null
 ;
-Create View country_infectionrate as 
-Select Location,date,total_cases,population, (total_cases/cast(population as float))*100 as infection_rate
-From CovidDeaths
-;
-Create View deathrate_usa as
-Select Location,date,total_cases,total_deaths,(CAST(total_deaths AS float)/total_cases)*100 as death_rate
-From CovidDeaths
-Where location like('%united states')
-;
+
 Create View Country_deathrate as
-Select location, date, sum(cast(new_cases as int)) AS total_cases, SUM(cast(new_deaths as int)) AS total_deaths, 
+Select location, sum(cast(new_cases as int)) AS total_cases, SUM(cast(new_deaths as int)) AS total_deaths, 
     (SUM(cast(new_deaths as int))/SUM(cast(new_cases as float))) *100 AS DeathPercentage
 From CovidDeaths
 where continent is not null
-group by 1,2
+group by 1
 ;
 
 /*
