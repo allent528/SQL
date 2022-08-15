@@ -193,10 +193,11 @@ From CovidDeaths
 Where location like('%united states')
 ;
 Create View Country_deathrate as
-Select date, sum(cast(new_cases as int)) AS total_cases, SUM(cast(new_deaths as int)) AS total_deaths, 
+Select location, date, sum(cast(new_cases as int)) AS total_cases, SUM(cast(new_deaths as int)) AS total_deaths, 
     (SUM(cast(new_deaths as int))/SUM(cast(new_cases as float))) *100 AS DeathPercentage
 From CovidDeaths
 where continent is not null
+group by 1,2
 ;
 
 /*
