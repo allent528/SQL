@@ -1,0 +1,115 @@
+-- Skills used: CTEs, joins, where, having, group by, order by, MySQL, MS SQL
+
+/* Julia just finished conducting a coding contest, and she needs your help assembling the leaderboard! 
+Write a query to print the respective hacker_id and name of hackers who achieved full scores for more than one challenge. 
+Order your output in descending order by the total number of challenges in which the hacker earned a full score. 
+If more than one hacker received full scores in same number of challenges, then sort them by ascending hacker_id.
+
+Source: https://www.hackerrank.com/challenges/full-score/problem?isFullScreen=true */
+
+-- MySQL
+-- Print hacker_id and name of the hackers
+-- only include full scores
+-- only inculde full scores for more than one challenge
+
+select h.hacker_id, h.name
+from hackers h
+inner join submissions s
+    on h.hacker_id = s.hacker_id
+inner join challenges c
+    on s.challenge_id = c.challenge_id
+inner join difficulty d
+    on c.difficulty_level = d.difficulty_level
+where s.score = d.score
+group by 1,2
+HAVING count(s.challenge_id) > 1
+order by count(s.challenge_id) desc, 1 asc
+;
+
+/* Julia asked her students to create some coding challenges. 
+Write a query to print the hacker_id, name, and the total number of challenges created by each student. 
+Sort your results by the total number of challenges in descending order. 
+If more than one student created the same number of challenges, then sort the result by hacker_id. 
+If more than one student created the same number of challenges and the count is less than the maximum number of challenges created, 
+then exclude those students from the result.
+
+Source: https://www.hackerrank.com/challenges/challenges/problem */
+
+-- MS SQL
+-- Make one table to track number of challenges created
+-- Make another table to track how many students created the same number of challenges
+-- Print hacker_id, name, total # challenges created by each student
+-- Exclude those who have created the same number of challenges which is less than the max
+
+
+With tbl_num_challenges as (
+
+SELECT
+        h.hacker_id,
+        h.name,
+        COUNT(c.challenge_id) as num_challenges
+FROM    Hackers h
+JOIN    Challenges c ON c.hacker_id = h.hacker_id
+GROUP BY h.hacker_id, h.name
+
+)
+
+,tbl_count_challenges as (
+
+SELECT
+        num_challenges,
+        COUNT(num_challenges) as count_challenges
+FROM    tbl_num_challenges
+GROUP BY num_challenges
+
+)
+
+SELECT tnc.hacker_id,
+        tnc.name,
+        tnc.num_challenges
+FROM tbl_num_challenges tnc
+JOIN tbl_count_challenges tcc 
+  ON tcc.num_challenges = tnc.num_challenges
+WHERE tcc.count_challenges = 1 
+OR 
+tnc.num_challenges = (SELECT max(num_challenges) FROM tbl_num_challenges)
+
+ORDER BY 
+     tnc.num_challenges desc, 
+     tnc.hacker_id
+;
+
+/* You did such a great job helping Julia with her last coding contest challenge that she wants you to work on this one, too!
+
+The total score of a hacker is the sum of their maximum scores for all of the challenges. 
+Write a query to print the hacker_id, name, and total score of the hackers ordered by the descending score. 
+If more than one hacker achieved the same total score, then sort the result by ascending hacker_id. 
+Exclude all hackers with a total score of 0 from your result.
+
+source: https://www.hackerrank.com/challenges/contest-leaderboard/problem */
+
+-- MS SQL
+-- make one table with max scores per challenge per hacker
+-- make another table to sum the scores per challenge per hacker
+-- exclude hackers with a total score of 0
+
+with cte_max_score as ( 
+
+select h.hacker_id as hacker_id,
+     h.name as name,
+     s.challenge_id as challenge_id, 
+    max(s.score) as max_score_per_chall
+from hackers h
+join submissions s
+    on h.hacker_id = s.hacker_id
+group by h.hacker_id, s.challenge_id, h.name
+
+)
+
+SELECT cms.hacker_id, cms.name, sum(cms.max_score_per_chall) as total_score
+from cte_max_score cms
+group by cms.hacker_id, cms.name
+HAVING sum(cms.max_score_per_chall) != 0
+order by sum(cms.max_score_per_chall) desc, cms.hacker_id
+;
+
