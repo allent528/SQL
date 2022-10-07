@@ -306,3 +306,6 @@ from admissions
 group by 1
   )
 ;
+
+
+/* Source: https://www.sql-practice.com */
