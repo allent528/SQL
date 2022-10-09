@@ -1,7 +1,8 @@
 /* An assortment of questions by DataLemur of the medium and hard difficulty. */
 /* Source: https://datalemur.com/questions */
 
--- 1. Assume you are given the table below on Uber transactions made by users. Write a query to obtain the third transaction of every user. 
+-- 1. User's Third Transaction
+-- Assume you are given the table below on Uber transactions made by users. Write a query to obtain the third transaction of every user. 
 -- Output the user id, spend and transaction date.
 
 WITH table_table AS (
