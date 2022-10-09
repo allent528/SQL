@@ -1,5 +1,8 @@
-/* An assortment of questions by DataLemur of the medium and hard difficulty. */
+/* An assortment of questions by DataLemur of the medium and hard difficulty. 
+I'll leave it to you to decide which ones are medium and which ones are hard */
+
 /* Source: https://datalemur.com/questions */
+
 
 -- 1. User's Third Transaction
 -- Assume you are given the table below on Uber transactions made by users. Write a query to obtain the third transaction of every user. 
