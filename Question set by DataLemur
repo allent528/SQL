@@ -1,7 +1,7 @@
 /* An assortment of questions by DataLemur of the medium and hard difficulty. 
 I'll leave it to you to decide which ones are medium and which ones are hard */
 
---skills used: window functions, CTEs
+--skills used: window functions, CTEs, rolling averages, subqueries
 
 /* Source: https://datalemur.com/questions */
 
@@ -49,3 +49,41 @@ SELECT
 FROM payout
 WHERE salary > double_average
   OR salary < half_average;
+
+/* 3. Assume you are given the tables below containing information on Snapchat users, their ages, and their time spent sending and opening snaps. 
+Write a query to obtain a breakdown of the time spent sending vs. opening snaps (as a percentage of total time spent on these activities) for each age group.
+
+Output the age bucket and percentage of sending and opening snaps. Round the percentage to 2 decimal places. */
+
+select age_bucket,
+round(send_time*100.0/total,2) as time_send_perc,
+round(open_time*100.0/total,2) as time_open_perc
+from (
+select age_bucket,
+sum(CASE WHEN activity_type = 'open' THEN time_spent ELSE 0 END) as open_time,
+sum(CASE when activity_type = 'send' THEN time_spent ELSE 0 END) as send_time,
+sum(time_spent) as total
+from (
+select *
+from activities a  
+join age_breakdown ab on ab.user_id = a.user_id
+where activity_type in ('open', 'send')
+) one
+group by age_bucket
+) two
+;
+
+/* 4. The table below contains information about tweets over a given period of time. 
+Calculate the 3-day rolling average of tweets published by each user for each date that a tweet was posted. 
+Output the user id, tweet date, and rolling averages rounded to 2 decimal places. */
+
+select user_id, tweet_date, ROUND(rollingavg,2) as rollingavg3days
+from (
+SELECT user_id,
+tweet_date,
+avg(count(distinct tweet_id)) over (partition by user_id order by tweet_date
+rows BETWEEN 2 preceding and current row) as rollingavg
+FROM tweets
+GROUP BY user_id, tweet_date
+) one
+;
