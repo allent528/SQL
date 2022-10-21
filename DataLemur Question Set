@@ -125,3 +125,18 @@ from (
 ) three
 where rownumber < 3
 ;
+
+/* 7. Assume you are given the table below on user transactions. 
+Write a query to obtain the list of customers whose first transaction was valued at $50 or more. Output the number of users. */
+
+SELECT count(*) as users
+from (
+  SELECT user_id, spend
+  from (
+    SELECT user_id, spend, transaction_date,
+    row_number() over (PARTITION BY user_id order by transaction_date)as rownumber
+    FROM user_transactions
+  ) one
+where rownumber = 1 and spend >= 50.00
+) two
+;
