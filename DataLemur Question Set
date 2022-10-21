@@ -140,3 +140,24 @@ from (
 where rownumber = 1 and spend >= 50.00
 ) two
 ;
+
+/* 8.The LinkedIn Creator team is looking for power creators who use their personal profile as a company or influencer page. 
+This means that if someone's Linkedin page has more followers than all the company they work for, we can safely assume that person is a Power Creator. 
+Keep in mind that if a person works at multiple companies, we should take into account the company with the most followers.
+
+Write a query to return the IDs of these LinkedIn power creators in ascending order. */
+
+with losers as (
+SELECT pp.profile_id as profile_id, pp.name as names, pp.followers, cp.name as namec, cp.followers 
+FROM personal_profiles pp
+left join employee_company ec on pp.profile_id = ec.personal_profile_id
+left join company_pages cp on cp.company_id = ec.company_id
+where pp.followers < cp.followers
+)
+
+select pp.profile_id 
+from personal_profiles pp
+left join losers l on l.profile_id = pp.profile_id 
+where l.namec is NULL
+order by pp.profile_id asc
+;
