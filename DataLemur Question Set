@@ -104,3 +104,24 @@ from (
 ) two
 group by two.day
 ;
+
+/* 6. Assume you are given the table below containing information on Amazon customers and their spend on products belonging to various categories. 
+Identify the top two highest-grossing products within each category in 2022. Output the category, product, and total spend. */
+
+select category, product, total_spend
+from (
+  select category, product, total_spend,
+  Row_number() over (PARTITION BY category order by total_spend desc) as rownumber
+  from (
+    select category, product, 
+    sum(spend) as total_spend
+    from (
+      SELECT *, cast(transaction_date as date) as datenohour
+      FROM product_spend
+    ) one
+    where extract(year from datenohour) = 2022
+    GROUP BY category, product
+  ) two
+) three
+where rownumber < 3
+;
