@@ -1,9 +1,7 @@
-/* An assortment of questions by DataLemur of the medium and hard difficulty. 
-I'll leave it to you to decide which ones are medium and which ones are hard */
+/* An assortment of questions by DataLemur 
+Source: https://datalemur.com/questions */
 
---skills used: window functions, CTEs, rolling averages, subqueries
-
-/* Source: https://datalemur.com/questions */
+--skills used: window functions, CTEs, rolling averages, subqueries, CASE statements, aggregate functions
 
 
 -- 1. User's Third Transaction
@@ -86,4 +84,23 @@ rows BETWEEN 2 preceding and current row) as rollingavg
 FROM tweets
 GROUP BY user_id, tweet_date
 ) one
+;
+
+/* 5. Assume you are given the table below containing measurement values obtained from a sensor over several days. Measurements are taken several times within a given day.
+Write a query to obtain the sum of the odd-numbered and even-numbered measurements on a particular day, in two different columns.
+Note that the 1st, 3rd, 5th measurements within a day are considered odd-numbered measurements and the 2nd, 4th, 6th measurements are even-numbered measurements. */
+
+select day,
+sum(CASE when num % 2 = 1 THEN measurement_value ELSE 0 END) as odd_sum,
+sum(CASE when num %2 = 0 THEN measurement_value ELSE 0 END) as even_sum
+from (
+  select day, measurement_value,
+  row_number() over (PARTITION BY day order by day) as num
+  from (
+    select *, cast(measurement_time as date) as day
+    from measurements
+    order by measurement_time
+  ) one
+) two
+group by two.day
 ;
