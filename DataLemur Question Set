@@ -161,3 +161,30 @@ left join losers l on l.profile_id = pp.profile_id
 where l.namec is NULL
 order by pp.profile_id asc
 ;
+
+/* 9. Assume there are three Spotify tables containing information about the artists, songs, and music charts. 
+Write a query to determine the top 5 artists whose songs appear in the Top 10 of the global_song_rank table the highest number of times. 
+From now on, we'll refer to this ranking number as "song appearances".
+
+Output the top 5 artist names in ascending order along with their song appearances ranking (not the number of song appearances, 
+but the rank of who has the most appearances). The order of the rank should take precedence.
+
+For example, Ed Sheeran's songs appeared 5 times in Top 10 list of the global song rank table; this is the highest number of appearances, so he is ranked 1st. 
+Bad Bunny's songs appeared in the list 4, so he comes in at a close 2nd. */
+
+select distinct artist_name, ranking
+from (
+  select artist_name, song_appearances,
+  dense_rank() over (order by song_appearances desc) as ranking
+  from (
+    SELECT a.artist_id, a.artist_name, rank,
+    count(s.song_id) over (PARTITION BY a.artist_name) as song_appearances
+    FROM artists a
+    left join songs s on s.artist_id = a.artist_id
+    left join global_song_rank g on g.song_id = s.song_id
+    where g.rank < 11
+  ) one
+) two
+where ranking < 6
+order by ranking asc, artist_name asc
+;
