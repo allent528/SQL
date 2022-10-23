@@ -1,7 +1,7 @@
 /* An assortment of questions by DataLemur 
 Source: https://datalemur.com/questions */
 
---skills used: window functions, CTEs, rolling averages, subqueries, CASE statements, aggregate functions
+--skills used: Postgre SQL, window functions, CTEs, rolling averages, subqueries, CASE statements, aggregate functions
 
 
 -- 1. User's Third Transaction
