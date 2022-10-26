@@ -1,0 +1,96 @@
+-- The SQL queries I used in my Cyclistic Case Study
+-- Allen Thomas
+
+-- number of rides
+
+select count(*), member_casual, weekday
+from april2020
+group by 2,3
+;
+
+select count(*), member_casual, weekday
+from may2020
+group by 2,3
+;
+
+
+-- average ride length
+
+select avg(ride_length_min), member_casual, weekday
+from may2020
+group by 2,3
+;
+
+select avg(ride_length_min), member_casual, weekday
+from april2020
+group by 2,3
+;
+
+
+-- most popular stations
+
+select start_station_name, count(ride_id)
+from may2020
+group by 1
+order by 2 desc
+;
+
+select start_station_name, count(ride_id)
+from april2020
+group by 1
+order by 2 desc
+;
+
+
+-- popular stations
+
+select count(distinct ride_id), start_station_name, member_casual
+from april2020
+group by 2,3
+order by 1 desc
+;
+
+select count(distinct ride_id), start_station_name, member_casual
+from may2020
+group by 2,3
+order by 1 desc
+;
+-- Views for Tableau
+
+create view countapril as 
+select count(*), member_casual, weekday
+from april2020
+group by 2,3
+;
+
+create view countmay as 
+select count(*), member_casual, weekday
+from may2020
+group by 2,3
+;
+
+create view avgmay as
+select avg(ride_length_min), member_casual, weekday
+from may2020
+group by 2,3
+;
+
+create view avgapril as
+select avg(ride_length_min), member_casual, weekday
+from april2020
+group by 2,3
+;
+
+create view mostpopmay as
+select start_station_name, count(ride_id)
+from may2020
+group by 1
+order by 2 desc
+;
+
+create view mostpopapr as
+select start_station_name, count(ride_id)
+from april2020
+group by 1
+order by 2 desc
+;
